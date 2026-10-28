@@ -1,4 +1,5 @@
 import time
+from typing import ClassVar
 
 import cv2
 import numpy as np
@@ -20,7 +21,6 @@ from one_dragon.envs.env_config import ScreenshotMethodEnum
 from one_dragon.utils import cv2_utils, str_utils
 from one_dragon.utils.i18_utils import gt
 from one_dragon.utils.log_utils import log
-from typing import ClassVar
 from zzz_od.context.zzz_context import ZContext
 from zzz_od.operation.zzz_operation import ZOperation
 
@@ -641,6 +641,9 @@ class EnterGame(ZOperation):
                 return self.round_success(match_word, wait=1)
 
             return self.round_wait(status=match_word, wait=1)
+
+        if self.resource_download_start_time is not None:
+            return self.wait_resource_download()
 
         if self.after_second_enter_click:
             # 登录失败只会出现在加载配置后的第二次进入游戏点击之后。
